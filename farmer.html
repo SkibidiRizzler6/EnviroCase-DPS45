@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Envirocase Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #ecf0f1;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        body.dark-mode {
+            background-color: #2c3e50;
+            color: #ecf0f1;
+        }
+
+        header {
+            background-color: #34495e;
+            color: white;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            box-sizing: border-box;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s;
+        }
+
+        header.dark-mode {
+            background-color: #1a252f;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-container img {
+            height: 50px;
+            margin-right: 10px;
+            cursor: pointer;
+        }
+
+        .logo-container .title {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .logout-button {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s;
+        }
+
+        .logout-button:hover {
+            background-color: #c0392b;
+        }
+
+        nav {
+            background-color: #2c3e50;
+            color: white;
+            position: fixed;
+            top: 60px;
+            left: 0;
+            bottom: 0;
+            width: 250px;
+            padding-top: 20px;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            box-sizing: border-box;
+            transition: background-color 0.3s;
+        }
+
+        nav.dark-mode {
+            background-color: #1a252f;
+        }
+
+        nav a {
+            color: white;
+            padding: 15px 20px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            font-size: 18px;
+            transition: background-color 0.3s;
+        }
+
+        nav a i {
+            margin-right: 10px;
+        }
+
+        nav a:hover {
+            background-color: #34495e;
+        }
+
+        main {
+            margin-left: 250px;
+            padding: 30px;
+            padding-top: 80px;
+            flex: 1;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        main.dark-mode {
+            background-color: #34495e;
+            color: #ecf0f1;
+        }
+
+        .section {
+            background-color: white;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .section.dark-mode {
+            background-color: #2c3e50;
+            color: #ecf0f1;
+        }
+
+        .section h2 {
+            margin: 0;
+            font-size: 28px;
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 20px;
+            transition: color 0.3s;
+        }
+
+        .section.dark-mode h2 {
+            color: #ecf0f1;
+        }
+
+        .section table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .section table, .section th, .section td {
+            border: 1px solid #ddd;
+        }
+
+        .section th, .section td {
+            padding: 15px;
+            text-align: left;
+        }
+
+        .section th {
+            background-color: #2c3e50;
+            color: white;
+        }
+
+        .section.tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .section.dark-mode th {
+            background-color: #1a252f;
+        }
+
+        .section.dark-mode tr:nth-child(even) {
+            background-color: #3a4e60;
+        }
+
+        .button {
+            background-color: #27ae60;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 18px;
+            display: block;
+            margin: 20px auto;
+            transition: background-color 0.3s;
+        }
+
+        .button:hover {
+            background-color: #219150;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+            position: relative;
+        }
+
+        .form-group input {
+            padding: 15px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            width: calc(100% - 30px);
+            font-size: 18px;
+            box-sizing: border-box;
+        }
+
+        .form-group label {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: white;
+            padding: 0 5px;
+            transition: 0.3s;
+            font-size: 18px;
+            color: #888;
+        }
+
+        .form-group input:focus + label,
+        .form-group input:not(:placeholder-shown) + label {
+            top: -10px;
+            left: 10px;
+            font-size: 14px;
+            color: #2c3e50;
+        }
+
+        .chart-container {
+            margin-top: 30px;
+        }
+
+        .chart {
+            height: 400px;
+            width: 100%;
+        }
+
+        .notifications {
+            background-color: #f8f9fa;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .notifications h3 {
+            font-size: 24px;
+            color: #2c3e50;
+        }
+
+        .notifications p {
+            font-size: 16px;
+            color: #7f8c8d;
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                width: 100%;
+                height: auto;
+                position: relative;
+                top: 0;
+                box-shadow: none;
+            }
+
+            main {
+                margin-left: 0;
+                padding: 20px;
+            }
+
+            header {
+                position: relative;
+                top: 0;
+            }
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <header>
+        <div class="logo-container">
+            <img src="logo.png" alt="Envirocase Logo" onclick="logout()">
+            <div class="title">EnviroCase</div>
+        </div>
+        <button class="logout-button" onclick="logout()">Logout</button>
+    </header>
+
+    <nav>
+        <a href="#dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+        <a href="#inventory"><i class="fas fa-boxes"></i> Inventory</a>
+        <a href="#orders"><i class="fas fa-shopping-cart"></i> Orders</a>
+        <a href="#payments"><i class="fas fa-money-check-alt"></i> Payments</a>
+        <a href="#track"><i class="fas fa-truck"></i> Track Orders</a>
+        <a href="#profile"><i class="fas fa-user"></i> Profile</a>
+        <a href="#settings"><i class="fas fa-cog"></i> Settings</a>
+    </nav>
+
+    <main>
+        <!-- Dashboard -->
+        <div id="dashboard" class="section">
+            <h2>Dashboard</h2>
+            <div class="chart-container">
+                <canvas id="salesChart" class="chart"></canvas>
+            </div>
+            <div class="chart-container">
+                <canvas id="revenueChart" class="chart"></canvas>
+            </div>
+        </div>
+
+        <!-- Inventory Management -->
+        <div id="inventory" class="section">
+            <h2>Inventory Management</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>SKU</th>
+                        <th>Stock</th>
+                        <th>Price</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="inventoryTableBody">
+                    <!-- Rows will be dynamically added here -->
+                </tbody>
+            </table>
+            <button class="button" onclick="showAddProductForm()">Add New Product</button>
+            <div id="addProductForm" style="display: none;">
+                <h3>Add New Product</h3>
+                <div class="form-group">
+                    <input type="text" id="productName" placeholder=" ">
+                    <label for="productName">Product Name</label>
+                </div>
+                <div class="form-group">
+                    <input type="text" id="productSKU" placeholder=" ">
+                    <label for="productSKU">SKU</label>
+                </div>
+                <div class="form-group">
+                    <input type="number" id="productStock" placeholder=" ">
+                    <label for="productStock">Stock</label>
+                </div>
+                <div class="form-group">
+                    <input type="number" id="productPrice" placeholder=" ">
+                    <label for="productPrice">Price</label>
+                </div>
+                <button class="button" onclick="addProduct()">Save Product</button>
+                <button class="button" onclick="hideAddProductForm()">Cancel</button>
+            </div>
+        </div>
+
+        <!-- Order Management -->
+        <div id="orders" class="section">
+            <h2>Order Management</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Customer</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="ordersTableBody">
+                    <!-- Rows will be dynamically added here -->
+                </tbody>
+            </table>
+            <button class="button" onclick="showAddOrderForm()">Add New Order</button>
+            <div id="addOrderForm" style="display: none;">
+                <h3>Add New Order</h3>
+                <div class="form-group">
+                    <input type="text" id="orderCustomer" placeholder=" ">
+                    <label for="orderCustomer">Customer Name</label>
+                </div>
+                <div class="form-group">
+                    <input type="date" id="orderDate" placeholder=" ">
+                    <label for="orderDate">Order Date</label>
+                </div>
+                <div class="form-group">
+                    <input type="text" id="orderStatus" placeholder=" ">
+                    <label for="orderStatus">Status</label>
+                </div>
+                <button class="button" onclick="addOrder()">Save Order</button>
+                <button class="button" onclick="hideAddOrderForm()">Cancel</button>
+            </div>
+        </div>
+
+        <!-- Payments Management -->
+        <div id="payments" class="section">
+            <h2>Payments Management</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Payment ID</th>
+                        <th>Order ID</th>
+                        <th>Amount</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="paymentsTableBody">
+                    <!-- Rows will be dynamically added here -->
+                </tbody>
+            </table>
+            <div id="paymentDetails" style="display: none;">
+                <h3>Payment Details</h3>
+                <p id="paymentInfo"></p>
+            </div>
+        </div>
+
+        <!-- Track Orders -->
+        <div id="track" class="section">
+			<h2>Track Orders</h2>
+				<div class="form-group">
+					<input type="text" id="orderID" placeholder="Enter OrderID " required>
+					<label for="orderID">Order ID</label>
+				</div>
+			<button class="button" onclick="trackOrder()">Track Order</button>
+			<div id="trackingResults" class="results" style="display: none;">
+        <!-- Tracking results will be displayed here -->
+			</div>
+		</div>
+
+        <!-- User Profile -->
+        <div id="profile" class="section">
+            <h2>User Profile</h2>
+            <div class="form-group">
+                <input type="text" id="username" value="John Doe" placeholder=" ">
+                <label for="username">Username</label>
+            </div>
+            <div class="form-group">
+                <input type="email" id="email" value="john.doe@example.com" placeholder=" ">
+                <label for="email">Email</label>
+            </div>
+            <button class="button" onclick="updateProfile()">Update Profile</button>
+        </div>
+
+        <!-- Settings -->
+        <div id="settings" class="section">
+            <h2>Settings</h2>
+            <button class="button" onclick="toggleDarkMode()">Toggle Dark Mode</button>
+        </div>
+    </main>
+
+    <script>
+        function logout() {
+            window.location.href = 'index.html';
+        }
+
+        function showAddProductForm() {
+            document.getElementById('addProductForm').style.display = 'block';
+        }
+
+        function hideAddProductForm() {
+            document.getElementById('addProductForm').style.display = 'none';
+        }
+
+        function addProduct() {
+            const name = document.getElementById('productName').value;
+            const sku = document.getElementById('productSKU').value;
+            const stock = document.getElementById('productStock').value;
+            const price = document.getElementById('productPrice').value;
+
+            const tableBody = document.getElementById('inventoryTableBody');
+            const newRow = document.createElement('tr');
+            newRow.innerHTML = `
+                <td>${name}</td>
+                <td>${sku}</td>
+                <td>${stock}</td>
+                <td>₹${price}</td>
+                <td><button class="button" onclick="editProduct()">Edit</button></td>
+            `;
+            tableBody.appendChild(newRow);
+
+            hideAddProductForm();
+            alert('Product added successfully!');
+        }
+
+        function showAddOrderForm() {
+            document.getElementById('addOrderForm').style.display = 'block';
+        }
+
+        function hideAddOrderForm() {
+            document.getElementById('addOrderForm').style.display = 'none';
+        }
+
+        function addOrder() {
+            const customer = document.getElementById('orderCustomer').value;
+            const date = document.getElementById('orderDate').value;
+            const status = document.getElementById('orderStatus').value;
+
+            const tableBody = document.getElementById('ordersTableBody');
+            const newRow = document.createElement('tr');
+            newRow.innerHTML = `
+                <td>ORD${Math.floor(Math.random() * 100000)}</td>
+                <td>${customer}</td>
+                <td>${date}</td>
+                <td>${status}</td>
+                <td><button class="button" onclick="updateOrder()">Update</button></td>
+            `;
+            tableBody.appendChild(newRow);
+
+            hideAddOrderForm();
+            alert('Order added successfully!');
+        }
+
+        function trackOrder() {
+            const orderID = document.getElementById('orderID').value;
+            alert('Tracking order: ' + orderID);
+        }
+
+        function updateProfile() {
+            alert('Profile updated!');
+        }
+
+        function viewPayment(paymentID) {
+            const paymentDetails = {
+                'PAY12345': 'Order ID: ORD12345\nAmount: ₹2000\nDate: 2024-08-01\nStatus: Completed',
+                'PAY67890': 'Order ID: ORD67890\nAmount: ₹3000\nDate: 2024-08-02\nStatus: Pending'
+            };
+
+            document.getElementById('paymentInfo').innerText = paymentDetails[paymentID] || 'Payment details not found.';
+            document.getElementById('paymentDetails').style.display = 'block';
+        }
+
+        function addPayment() {
+            alert('Adding new payment...');
+        }
+
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            document.querySelector('header').classList.toggle('dark-mode');
+            document.querySelector('nav').classList.toggle('dark-mode');
+            document.querySelector('main').classList.toggle('dark-mode');
+            document.querySelectorAll('.section').forEach(section => section.classList.toggle('dark-mode'));
+        }
+
+        // Chart.js example
+        const ctx1 = document.getElementById('salesChart').getContext('2d');
+        const salesChart = new Chart(ctx1, {
+            type: 'line',
+            data: {
+                labels: ['January', 'February', 'March', 'April', 'May', 'June'],
+                datasets: [{
+                    label: 'Sales',
+                    data: [120, 150, 180, 220, 200, 250],
+                    borderColor: '#3498db',
+                    backgroundColor: 'rgba(52, 152, 219, 0.2)',
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    x: { beginAtZero: true },
+                    y: { beginAtZero: true }
+                }
+            }
+        });
+
+        const ctx2 = document.getElementById('revenueChart').getContext('2d');
+        const revenueChart = new Chart(ctx2, {
+            type: 'bar',
+            data: {
+                labels: ['January', 'February', 'March', 'April', 'May', 'June'],
+                datasets: [{
+                    label: 'Revenue',
+                    data: [3000, 3500, 4000, 4500, 4200, 5000],
+                    backgroundColor: '#e74c3c',
+                    borderColor: '#c0392b',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    x: { beginAtZero: true },
+                    y: { beginAtZero: true }
+                }
+            }
+        });
+		function trackOrder() {
+    const orderID = document.getElementById('orderID').value.trim();
+    const trackingResults = document.getElementById('trackingResults');
+
+    if (orderID) {
+        // Simulate a tracking request (replace with actual API call)
+        const simulatedResponse = {
+            orderID: orderID,
+            status: 'Shipped',
+            estimatedDelivery: 'August 5, 2024',
+            trackingURL: 'https://example.com/track/' + orderID
+        };
+
+        // Display tracking results
+        trackingResults.innerHTML = `
+            <h3>Order Status</h3>
+            <p><strong>Order ID:</strong> ${simulatedResponse.orderID}</p>
+            <p><strong>Status:</strong> ${simulatedResponse.status}</p>
+            <p><strong>Estimated Delivery:</strong> ${simulatedResponse.estimatedDelivery}</p>
+            
+        `;
+        trackingResults.style.display = 'block';
+    } else {
+        alert('Please enter an Order ID.');
+    }
+}
+    </script>
+</body>
+</html>
