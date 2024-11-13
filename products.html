@@ -6,7 +6,7 @@
     <title>Envirocase Buyer Page</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
-        body {
+       body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 0;
@@ -307,10 +307,147 @@
                 margin-left: 0;
             }
         }
+
+        /* Modal styling */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        /* Modal background */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            animation: fadeIn 0.4s ease;
+        }
+
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%;
+            max-width: 600px;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            animation: slideUp 0.4s ease-out;
+        }
+
+        /* Modal close button */
+        .close-btn {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 50%;
+            cursor: pointer;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 18px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s;
+        }
+
+        .close-btn:hover {
+            background-color: #c0392b;
+        }
+
+        /* Modal title */
+        .modal-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        /* Form Styling */
+        .checkout-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .checkout-form input {
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            font-size: 16px;
+            width: 100%;
+        }
+
+        .checkout-form label {
+            font-size: 16px;
+            font-weight: 600;
+            color: #34495e;
+        }
+
+        .checkout-form input:focus {
+            border-color: #3498db;
+            outline: none;
+        }
+
+        .checkout-form button {
+            background-color: #27ae60;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+            box-shadow: 0 3px 7px rgba(0, 0, 0, 0.1);
+        }
+
+        .checkout-form button:hover {
+            background-color: #219150;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translate(-50%, 10%);
+            }
+            to {
+                transform: translate(-50%, -50%);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .modal-content {
+                width: 90%;
+            }
+
+            .checkout-form input,
+            .checkout-form button {
+                font-size: 14px;
+            }
+        }
     </style>
 </head>
 <body>
-    <div class="header">
+     <div class="header">
         <div class="logo-container">
             <img src="logo.png" alt="Envirocase Logo" onclick="logout()">
             <div class="title">EnviroCase</div>
@@ -322,7 +459,7 @@
                 <ul id="cartItems">
                     <li class="empty">Your cart is empty</li>
                 </ul>
-                <button class="checkout-button" onclick="proceedToCheckout()">Checkout</button>
+                <button class="checkout-button" onclick="openModal()">Checkout</button>
             </div>
         </div>
     </div>
@@ -491,71 +628,95 @@
         
     </div>
 
-    <script>
-        let cart = [];
 
-        function toggleCartMenu() {
-            const cartMenu = document.getElementById('cartMenu');
-            cartMenu.style.display = (cartMenu.style.display === 'block') ? 'none' : 'block';
+    <!-- Modal Structure -->
+<div class="modal" id="checkoutModal">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeModal()">×</button>
+            <div class="modal-title">Checkout Form</div>
+
+            <form class="checkout-form" id="checkoutForm" action="#" method="post">
+                <label for="fullName">Full Name</label>
+                <input type="text" id="fullName" name="fullName" required placeholder="Enter your full name">
+
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" required placeholder="Enter your email address">
+
+                <label for="address">Shipping Address</label>
+                <input type="text" id="address" name="address" required placeholder="Enter your shipping address">
+
+                <label for="cardNumber">Credit Card Number</label>
+                <input type="text" id="cardNumber" name="cardNumber" required placeholder="Enter your card number">
+
+                <label for="expiryDate">Expiry Date</label>
+                <input type="month" id="expiryDate" name="expiryDate" required>
+
+                <label for="cvv">CVV</label>
+                <input type="text" id="cvv" name="cvv" required placeholder="Enter CVV">
+
+                <button type="submit" onclick="redirectToThankYou()">Submit Order</button>
+            </form>
+        </div>    <script>
+		function redirectToThankYou() {
+            window.location.href = "thank-you-page.html";
         }
+        // Open Modal
+function openModal() {
+    document.getElementById("checkoutModal").style.display = "block";
+}
 
-        function addToCart(productName, price) {
-            // Check if the product is already in the cart
-            const existingProduct = cart.find(item => item.name === productName);
-            if (existingProduct) {
-                existingProduct.quantity += 1;
-            } else {
-                cart.push({ name: productName, price: price, quantity: 1 });
-            }
-            updateCartMenu();
-        }
+// Close Modal
+function closeModal() {
+    document.getElementById("checkoutModal").style.display = "none";
+}
 
-        function updateCartMenu() {
-            const cartItems = document.getElementById('cartItems');
-            cartItems.innerHTML = ''; // Clear existing items
-
-            if (cart.length === 0) {
-                cartItems.innerHTML = '<li class="empty">Your cart is empty</li>';
-            } else {
-                cart.forEach(item => {
-                    const li = document.createElement('li');
-                    li.textContent = `${item.name} x${item.quantity} - ₹${item.price * item.quantity}`;
-                    cartItems.appendChild(li);
-                });
-            }
-        }
-
-        function logout() {
-            window.location.href = 'index.html';
-        }
-
-        function proceedToCheckout() {
-            window.location.href = 'payments.html';
-        }
-		function trackOrder(event) {
-        event.preventDefault(); // Prevent the default form submission
-
-        const orderID = document.getElementById('orderID').value;
-        const resultsDiv = document.getElementById('trackOrderResults');
-
-        // Simulate tracking request and response
-        // In a real application, you would make an AJAX request to your server
-        const trackingData = {
-            "12345": "Order is being processed.",
-            "67890": "Order has been shipped.",
-            "11121": "Order has been delivered."
-        };
-
-        // Display tracking information
-        if (trackingData[orderID]) {
-            resultsDiv.innerHTML = `<p>${trackingData[orderID]}</p>`;
-        } else {
-            resultsDiv.innerHTML = `<p>No information available for Order ID ${orderID}.</p>`;
-        }
+// Close modal if clicked outside of it
+window.onclick = function(event) {
+    var modal = document.getElementById("checkoutModal");
+    if (event.target == modal) {
+        closeModal();
     }
+}
+
+function submitCheckout() {
+    // Gather form data
+    const name = document.getElementById('name').value;
+    const address = document.getElementById('address').value;
+    const city = document.getElementById('city').value;
+    const state = document.getElementById('state').value;
+    const zip = document.getElementById('zip').value;
+    const cardNumber = document.getElementById('cardNumber').value;
+    const expiryDate = document.getElementById('expiryDate').value;
+    const cvv = document.getElementById('cvv').value;
+
+    // Simulate payment processing (replace with real payment processing if needed)
+    const paymentSuccessful = true;  // Simulating a successful payment
+
+    if (paymentSuccessful) {
+        alert(`Payment submitted successfully for ${name}`);
+        
+        // Redirect to thankyou.html after successful payment
+        window.location.href = "thank-you-page.html";
+    } else {
+        alert("Payment failed. Please try again.");
+    }
+}
+
+// Function to handle adding items to the cart
+function addToCart(product, price) {
+    // Add the product to the cart list
+    const cartItems = document.getElementById('cartItems');
+    const newItem = document.createElement('li');
+    newItem.textContent = `${product} - ₹${price}`;
+    cartItems.appendChild(newItem);
+    document.querySelector('.empty').style.display = 'none';
+}
+
+function toggleCartMenu() {
+    const cartMenu = document.getElementById("cartMenu");
+    cartMenu.style.display = cartMenu.style.display === "none" ? "block" : "none";
+}
+
     </script>
-	<script src="https://widget.cxgenie.ai/widget.js" data-aid="816b7a0e-c12b-4e51-b137-bbca4e35991f"
-		
-		 data-lang="en"></script>
 </body>
 </html>
