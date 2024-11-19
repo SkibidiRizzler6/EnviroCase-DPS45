@@ -1,7 +1,7 @@
 .u-section-1 .u-sheet-1 {
   min-height: 182px;
 } .u-section-2 {
-  background-image: url("images/d54ce16d9347089b84f510803f61d4a170b6f974c000108ab32e01c880988a483a2a3c37e102c30da3e4ba24dd7c102cabd38d4156365cd3651fda_1280.jpg");
+  background-image: url("images/OIP.jpeg");
 }
 
 .u-section-2 .u-sheet-1 {
@@ -14,7 +14,9 @@
   --animation-custom_in-opacity: 0;
   --animation-custom_in-rotate: 0deg;
   --animation-custom_in-scale: 1;
-  margin: 71px 12px 0 -18px;
+  font-weight: 700;
+  text-shadow: 2px 2px 8px rgba(128,128,128,1);
+  margin: 206px 12px 0 -18px;
 }
 
 .u-section-2 .u-social-icons-1 {
@@ -22,7 +24,7 @@
   min-height: 16px;
   width: 198px;
   min-width: 108px;
-  margin: 12px auto 60px 456px;
+  margin: 36px auto 60px 456px;
 }
 
 .u-section-2 .u-icon-1 {
@@ -1017,24 +1019,35 @@
     padding-right: 10px;
   }
 } .u-section-9 {
-  background-image: linear-gradient(to right, #478ac9, #db545a);
+  background-image: url("images/f1dc0679247358624845a74b8ac5cc0f57e9f79b127cf615454a4fffed96e116da9a43204c56c95c026b45c72064264431b7a454c4518cfb484fc1_1280.jpg");
+  background-position: 50% 50%;
 }
 
 .u-section-9 .u-sheet-1 {
-  min-height: 359px;
+  min-height: 316px;
 }
 
 .u-section-9 .u-text-1 {
   font-weight: 700;
-  margin: 54px auto 0;
+  margin: 67px auto 0;
 }
 
 .u-section-9 .u-text-2 {
-  margin: 30px 117px 54px 0;
+  margin: 33px 117px 21px 0;
 }
 
 @media (max-width: 1199px) {
+  .u-section-9 .u-sheet-1 {
+    min-height: 695px;
+  }
+
   .u-section-9 .u-text-2 {
     margin-right: 0;
+  }
+}
+
+@media (max-width: 575px) {
+  .u-section-9 .u-sheet-1 {
+    min-height: 622px;
   }
 }
