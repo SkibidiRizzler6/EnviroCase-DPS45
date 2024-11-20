@@ -459,7 +459,7 @@
                 <ul id="cartItems">
                     <li class="empty">Your cart is empty</li>
                 </ul>
-                <button class="checkout-button" onclick="openModal()"><a href="thank-you-page.html">Checkout</a></button>
+                <button class="checkout-button" onclick="openModal()">Checkout</button>
             </div>
         </div>
     </div>
@@ -654,7 +654,7 @@
                 <label for="cvv">CVV</label>
                 <input type="text" id="cvv" name="cvv" required placeholder="Enter CVV">
 
-                <button type="submit" onclick="redirectToThankYou()">Submit Order</button>
+                <button type="submit" onclick="redirectToThankYou()"><a href="thank-you-page.html">Submit Order</a></button>
             </form>
         </div>    <script>
 		function redirectToThankYou() {
@@ -699,6 +699,7 @@ function submitCheckout() {
         alert("Payment failed. Please try again.");
     }
 }
+
 
 
 // Function to handle adding items to the cart
