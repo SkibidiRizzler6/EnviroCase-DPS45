@@ -680,11 +680,9 @@ window.onclick = function(event) {
 
 function submitCheckout() {
     // Gather form data
-    const name = document.getElementById('name').value;
+    const name = document.getElementById('fullName').value;
     const address = document.getElementById('address').value;
-    const city = document.getElementById('city').value;
-    const state = document.getElementById('state').value;
-    const zip = document.getElementById('zip').value;
+    const email = document.getElementById('email').value;
     const cardNumber = document.getElementById('cardNumber').value;
     const expiryDate = document.getElementById('expiryDate').value;
     const cvv = document.getElementById('cvv').value;
@@ -695,12 +693,13 @@ function submitCheckout() {
     if (paymentSuccessful) {
         alert(`Payment submitted successfully for ${name}`);
         
-        // Redirect to thankyou.html after successful payment
+        // Redirect to thank-you.html after successful payment
         window.location.href = "thank-you-page.html";
     } else {
         alert("Payment failed. Please try again.");
     }
 }
+
 
 // Function to handle adding items to the cart
 function addToCart(product, price) {
