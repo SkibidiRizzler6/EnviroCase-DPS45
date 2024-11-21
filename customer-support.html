@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Support - EnviroCase</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: fixed;
+            top: 0;
+            z-index: 1000;
+            width: 100%;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header .logo-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .header .logo-container img {
+            height: 60px;
+            margin-right: 20px;
+            cursor: pointer;
+        }
+
+        .header .title {
+            font-weight: bold;
+            font-size: 24px;
+        }
+
+        .sidebar {
+            width: 250px;
+            background-color: #34495e;
+            color: white;
+            position: fixed;
+            top: 100px;
+            left: 0;
+            bottom: 0;
+            padding-top: 20px;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+
+        .sidebar a {
+            color: white;
+            padding: 15px 20px;
+            text-decoration: none;
+            display: block;
+            font-size: 18px;
+            transition: background-color 0.3s;
+            border-radius: 4px;
+            margin: 5px 0;
+        }
+
+        .sidebar a:hover {
+            background-color: #2c3e50;
+        }
+
+        .main-content {
+            margin-left: 250px;
+            padding: 30px;
+            padding-top: 100px;
+            flex: 1;
+        }
+
+        .section {
+            background-color: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .section h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            color: #555;
+            margin-bottom: 8px;
+        }
+
+        .form-group input, 
+        .form-group select, 
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-sizing: border-box;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .submit-btn {
+            background-color: #2c3e50;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: background-color 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            background-color: #1b2838;
+        }
+
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 20px 30px;
+            border-radius: 8px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            z-index: 10000;
+        }
+
+        .popup h3 {
+            color: #2c3e50;
+            margin: 0 0 15px;
+        }
+
+        .popup button {
+            background-color: #2c3e50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 14px;
+            cursor: pointer;
+            border-radius: 8px;
+        }
+
+        .popup button:hover {
+            background-color: #1b2838;
+        }
+
+        .popup-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 9999;
+        }
+		/* Popup styles */
+		.popup-overlay {
+			display: none;
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background: rgba(0, 0, 0, 0.5);
+			z-index: 9999;
+			animation: fadeInOverlay 0.3s ease-out;
+		}
+
+		.popup {
+			display: none;
+			position: fixed;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			background: #fff;
+			padding: 30px 40px;
+			border-radius: 10px;
+			box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+			width: 400px;
+			max-width: 100%;
+			text-align: center;
+			z-index: 10000;
+			animation: scaleIn 0.3s ease-out;
+		}
+
+		.popup h3 {
+			color: #2c3e50;
+			font-size: 24px;
+			margin-bottom: 20px;
+			font-weight: 600;
+			letter-spacing: 0.5px;
+		}
+
+		.popup p {
+			color: #555;
+			font-size: 16px;
+			margin-bottom: 30px;
+		}
+
+		.popup button {
+			background-color: #2c3e50;
+			color: white;
+			border: none;
+			padding: 12px 25px;
+			font-size: 16px;
+			cursor: pointer;
+			border-radius: 8px;
+			transition: background-color 0.3s ease;
+			box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+		}
+
+		.popup button:hover {
+			background-color: #1b2838;
+			box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+		}
+
+		@keyframes fadeInOverlay {
+			0% {
+				opacity: 0;
+			}
+			100% {
+				opacity: 1;
+			}
+		}
+
+		@keyframes scaleIn {
+			0% {
+				transform: translate(-50%, -50%) scale(0.8);
+			}
+			100% {
+				transform: translate(-50%, -50%) scale(1);
+			}
+		}
+
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo-container">
+            <img src="logo.png" alt="Envirocase Logo" onclick="logout()">
+            <div class="title">EnviroCase</div>
+        </div>
+    </div>
+
+    <div class="sidebar">
+        <a href="order-history.html"><i class="fas fa-history"></i> Order History</a>
+        <a href="customer-support.html"><i class="fas fa-headset"></i> Customer Support</a>
+        <a href="track-order.html"><i class="fas fa-truck"></i> Track Order</a>
+    </div>
+
+    <div class="main-content">
+        <div class="section">
+            <h1>Customer Support</h1>
+            <form id="supportForm">
+                <div class="form-group">
+                    <label for="name">Your Name</label>
+                    <input type="text" id="name" placeholder="Enter your name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" placeholder="Enter your email" required>
+                </div>
+                <div class="form-group">
+                    <label for="query-type">Query Type</label>
+                    <select id="query-type">
+                        <option value="general">General Inquiry</option>
+                        <option value="order">Order Issue</option>
+                        <option value="technical">Technical Support</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <textarea id="description" placeholder="Describe your issue"></textarea>
+                </div>
+                <button type="submit" class="submit-btn">Submit Query</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- OHHHHHHHHHH SKIBIDIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII-->
+    <!-- Popup Overlay and Popup -->
+		<div class="popup-overlay" id="popupOverlay"></div>
+			<div class="popup" id="popup">
+				<h3>Query Received!</h3>
+				<p>Thank you for reaching out. Our team will respond to you shortly.</p>
+				<button onclick="closePopup()">OK</button>
+			</div>
+		</div>
+
+
+    <script>
+        // I HAVE INFINTE RIZZZZZ TIKTOK RIZZ PARTY
+       // Form submission handling
+		document.getElementById("supportForm").addEventListener("submit", function (e) {
+			e.preventDefault();
+			document.getElementById("popupOverlay").style.display = "block";
+			document.getElementById("popup").style.display = "block";
+		});
+
+		// Close popup
+		function closePopup() {
+			document.getElementById("popupOverlay").style.display = "none";
+			document.getElementById("popup").style.display = "none";
+		}
+
+    </script>
+</body>
+</html>
