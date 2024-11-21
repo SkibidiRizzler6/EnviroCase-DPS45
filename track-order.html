@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Track Your Order - EnviroCase</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header .logo-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .header .logo-container img {
+            height: 60px;
+            margin-right: 20px;
+            cursor: pointer;
+        }
+
+        .header .title {
+            font-weight: bold;
+            font-size: 24px;
+        }
+
+        .container {
+            background-color: white;
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            width: 90%;
+            margin-top: 100px;
+            text-align: center;
+        }
+
+        .container h1 {
+            font-size: 28px;
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 16px;
+            color: #555;
+            margin-bottom: 10px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-sizing: border-box;
+        }
+
+        .track-btn {
+            background-color: #2c3e50;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: background-color 0.3s ease;
+            width: 100%;
+        }
+
+        .track-btn:hover {
+            background-color: #1b2838;
+        }
+
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+        }
+
+        .status.completed {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .status.pending {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+
+        .status.cancelled {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+
+            .header .logo-container img {
+                height: 50px;
+            }
+        }
+		.sidebar {
+            width: 250px;
+            background-color: #34495e;
+            color: white;
+            position: fixed;
+            top: 100px;
+            left: 0;
+            bottom: 0;
+            padding-top: 20px;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+
+        .sidebar a {
+            color: white;
+            padding: 15px 20px;
+            text-decoration: none;
+            display: block;
+            font-size: 18px;
+            transition: background-color 0.3s;
+            border-radius: 4px;
+            margin: 5px 0;
+            position: relative;
+        }
+
+        .sidebar a:hover {
+            background-color: #2c3e50;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo-container">
+            <img src="logo.png" alt="EnviroCase Logo" onclick="logout()">
+            <div class="title">EnviroCase</div>
+        </div>
+    </div>
+	<div class="sidebar">
+        <a href="order-history.html"><i class="fas fa-history"></i> Order History</a>
+        <a href="customer-support.html"><i class="fas fa-headset"></i> Customer Support</a>
+        <a href="track-order.html"><i class="fas fa-truck"></i> Track Order</a>
+    </div>
+    <div class="container">
+        <h1>Track Your Order</h1>
+        <div class="form-group">
+            <label for="order-id">Enter Order Number (e.g., ORD001)</label>
+            <input type="text" id="order-id" placeholder="ORDXXX">
+        </div>
+        <button class="track-btn" onclick="trackOrder()">Track Order</button>
+        <div id="result" class="result" style="display: none;"></div>
+    </div>
+
+    <script>
+        const orders = {
+            ORD001: { name: "Recycled Packaging Box - Small", status: "completed" },
+            ORD002: { name: "Recycled Packaging Box - Medium", status: "completed" },
+            ORD003: { name: "Recycled Packaging Box - Large", status: "pending" },
+            ORD004: { name: "Recycled Packaging Box - Extra Large", status: "cancelled" },
+            ORD005: { name: "Recycled Packaging Box - Gift Pack", status: "completed" },
+        };
+
+        function trackOrder() {
+            const orderId = document.getElementById("order-id").value.trim().toUpperCase();
+            const resultDiv = document.getElementById("result");
+
+            if (orders[orderId]) {
+                const order = orders[orderId];
+                resultDiv.innerHTML = `
+                    Order Name: <strong>${order.name}</strong><br>
+                    Status: <span class="status ${order.status}">${order.status.charAt(0).toUpperCase() + order.status.slice(1)}</span>
+                `;
+                resultDiv.style.display = "block";
+            } else {
+                resultDiv.innerHTML = "Order not found. Please check your order number.";
+                resultDiv.style.display = "block";
+                resultDiv.className = "result status cancelled";
+            }
+        }
+    </script>
+</body>
+</html>
