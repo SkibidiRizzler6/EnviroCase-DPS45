@@ -251,12 +251,34 @@
             <i class="ri-eye-off-line login__eye"></i>
           </div>
         </div>
+		<div class="role-selector">
+          <label>
+            <input type="radio" name="role" value="farmer" required>
+            Farmer
+          </label>
+          <label>
+            <input type="radio" name="role" value="buyer" required>
+            Buyer
+          </label>
+        </div>
 		
 		<button type="submit" class="login__button">Sign Up</button>
 		
       </div>
     </form>
   </div>
+  <script>
+    const form = document.getElementById('signupForm');
+    form.addEventListener('submit', function (event) {
+      event.preventDefault(); // Prevent default form submission
+      const role = document.querySelector('input[name="role"]:checked').value;
+      if (role === 'farmer') {
+        window.location.href = 'farmer.html';
+      } else if (role === 'buyer') {
+        window.location.href = 'products.html';
+      }
+    });
+  </script>
 <script src="https://widget.cxgenie.ai/widget.js" data-aid="816b7a0e-c12b-4e51-b137-bbca4e35991f"
 		
 		 data-lang="en"></script>
